@@ -10,7 +10,7 @@ def create_app(test_config=None):
     # create app object based on flask_app env 
     app = Flask(__name__)
     # Set up Cross-Origin Resource Sharing. Accept request from any domain
-    CORS(app, resources={r'/api/': {'origins': '*'}})
+    CORS(app, resources={r'/': {'origins': '*'}})
 
     # set up link to connect database
     setup_db(app)
@@ -48,13 +48,13 @@ def create_app(test_config=None):
     @app.route('/movies/create', methods=['POST'])
     @requires_auth('post:movies/create')
     def add_movie_func(jwt=0): 
-        body = request.get_json()
-        print(body)
+        body_request = request.get_json()
+        print(body_request)
 
         try:
             #get info request
-            title = body.get('title')
-            release_year = body.get('release_year')
+            title = body_request.get('title')
+            release_year = body_request.get('release_year')
 
             movie = Movie(title=title, release_year=release_year)
             movie.insert()
@@ -98,10 +98,10 @@ def create_app(test_config=None):
         if movie:
             try:
                 
-                body = request.get_json()
+                body_request = request.get_json()
                 #get info request
-                title = body.get('title')
-                release_year = body.get('release_year')
+                title = body_request.get('title')
+                release_year = body_request.get('release_year')
 
                 if title != None:
                     movie.title = title
@@ -136,15 +136,15 @@ def create_app(test_config=None):
     @app.route('/actors/create', methods=['POST'])
     @requires_auth('post:actors/create')
     def add_actor_func(jwt=0):
-        body = request.get_json()
-        print(body)
+        body_request = request.get_json()
+        print(body_request)
 
         try:
             #get info request
-            name = body.get('name')
-            age = body.get('age')
-            gender = body.get('gender')
-            movie_id = body.get('movie_id')
+            name = body_request.get('name')
+            age = body_request.get('age')
+            gender = body_request.get('gender')
+            movie_id = body_request.get('movie_id')
 
             actor = Actor(name=name, age=age, gender=gender, movie_id=movie_id)
             actor.insert()
@@ -187,13 +187,13 @@ def create_app(test_config=None):
 
         if actor:
             try:
-                body = request.get_json()     
+                body_request = request.get_json()     
 
                 #get info request         
-                name = body.get('name')
-                age = body.get('age')
-                gender = body.get('gender')
-                movie_id = body.get('movie_id')
+                name = body_request.get('name')
+                age = body_request.get('age')
+                gender = body_request.get('gender')
+                movie_id = body_request.get('movie_id')
 
                 if name != None:
                     actor.name = name
